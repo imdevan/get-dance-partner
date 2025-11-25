@@ -8,89 +8,101 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Catppuccin Frappe (Light Theme) */
+    --background: 220 17% 93%;
+    --foreground: 229 19% 23%;
+    
+    --card: 220 17% 96%;
+    --card-foreground: 229 19% 23%;
+    
+    --popover: 220 17% 96%;
+    --popover-foreground: 229 19% 23%;
+    
+    --primary: 239 68% 73%;
+    --primary-foreground: 229 19% 23%;
+    
+    --secondary: 189 43% 73%;
+    --secondary-foreground: 229 19% 23%;
+    
+    --muted: 231 16% 84%;
+    --muted-foreground: 230 13% 55%;
+    
+    --accent: 40 62% 73%;
+    --accent-foreground: 229 19% 23%;
+    
+    --success: 96 38% 72%;
+    --warning: 40 62% 73%;
+    --info: 199 55% 69%;
+    
+    --destructive: 359 68% 71%;
+    --destructive-foreground: 220 17% 93%;
+    
+    --border: 231 16% 84%;
+    --input: 231 16% 84%;
+    --ring: 239 68% 73%;
+    
+    --radius: 0.75rem;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(239, 68%, 73%), hsl(266, 85%, 86%));
+    --gradient-secondary: linear-gradient(135deg, hsl(189, 43%, 73%), hsl(174, 36%, 64%));
+    
+    --sidebar-background: 220 17% 96%;
+    --sidebar-foreground: 229 19% 23%;
+    --sidebar-primary: 239 68% 73%;
+    --sidebar-primary-foreground: 229 19% 23%;
+    --sidebar-accent: 231 16% 84%;
+    --sidebar-accent-foreground: 229 19% 23%;
+    --sidebar-border: 231 16% 84%;
+    --sidebar-ring: 239 68% 73%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Catppuccin Macchiato (Dark Theme) */
+      --background: 232 23% 18%;
+      --foreground: 227 68% 88%;
+      
+      --card: 233 23% 15%;
+      --card-foreground: 227 68% 88%;
+      
+      --popover: 233 23% 15%;
+      --popover-foreground: 227 68% 88%;
+      
+      --primary: 220 91% 80%;
+      --primary-foreground: 232 23% 18%;
+      
+      --secondary: 189 71% 73%;
+      --secondary-foreground: 232 23% 18%;
+      
+      --muted: 233 12% 39%;
+      --muted-foreground: 227 27% 72%;
+      
+      --accent: 41 88% 75%;
+      --accent-foreground: 232 23% 18%;
+      
+      --success: 105 48% 72%;
+      --warning: 41 88% 75%;
+      --info: 189 59% 80%;
+      
+      --destructive: 351 74% 73%;
+      --destructive-foreground: 227 68% 88%;
+      
+      --border: 233 12% 39%;
+      --input: 233 12% 39%;
+      --ring: 220 91% 80%;
+      
+      --gradient-primary: linear-gradient(135deg, hsl(220, 91%, 80%), hsl(267, 84%, 81%));
+      --gradient-secondary: linear-gradient(135deg, hsl(189, 71%, 73%), hsl(165, 48%, 70%));
+      
+      --sidebar-background: 240 21% 15%;
+      --sidebar-foreground: 227 68% 88%;
+      --sidebar-primary: 220 91% 80%;
+      --sidebar-primary-foreground: 232 23% 18%;
+      --sidebar-accent: 233 12% 39%;
+      --sidebar-accent-foreground: 227 68% 88%;
+      --sidebar-border: 233 12% 39%;
+      --sidebar-ring: 220 91% 80%;
+    }
   }
 }
 
@@ -101,5 +113,23 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+  
+  .parallax {
+    transition: transform 0.1s ease-out;
   }
 }
