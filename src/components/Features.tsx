@@ -44,7 +44,7 @@ const Features = () => {
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
             Everything You Need to{" "}
-            <span className="gradient-primary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent selection:bg-primary/20 selection:text-primary">
               Excel
             </span>
           </h2>
@@ -57,15 +57,11 @@ const Features = () => {
         <div className="grid md:grid-cols-2 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
-            const offset = (scrollY - 400) * (0.1 + index * 0.05);
             
             return (
               <Card
                 key={index}
                 className="group hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border-2 overflow-hidden"
-                style={{
-                  transform: `translateY(${Math.max(0, offset)}px)`,
-                }}
               >
                 <CardContent className="p-8">
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>

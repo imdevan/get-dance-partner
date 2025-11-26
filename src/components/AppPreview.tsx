@@ -2,11 +2,20 @@ import { useState, useEffect } from "react";
 
 const AppPreview = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -15,7 +24,7 @@ const AppPreview = () => {
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
             Designed for{" "}
-            <span className="gradient-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-secondary via-secondary/80 to-accent bg-clip-text text-transparent selection:bg-secondary/20 selection:text-secondary">
               Dancers
             </span>
           </h2>
@@ -29,7 +38,7 @@ const AppPreview = () => {
           <div 
             className="space-y-6"
             style={{
-              transform: `translateY(${(scrollY - 1000) * 0.1}px)`,
+              transform: isMobile ? 'none' : `translateY(${(scrollY - 1000) * 0.1}px)`,
             }}
           >
             <div className="space-y-3">
@@ -66,7 +75,7 @@ const AppPreview = () => {
           <div 
             className="relative group"
             style={{
-              transform: `translateY(${(scrollY - 1000) * -0.1}px)`,
+              transform: isMobile ? 'none' : `translateY(${(scrollY - 1000) * -0.1}px)`,
             }}
           >
             <div className="absolute -inset-4 gradient-primary opacity-20 rounded-3xl blur-2xl group-hover:opacity-30 transition-opacity" />
