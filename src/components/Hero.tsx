@@ -1,30 +1,15 @@
 import { Video, BookOpen, Tag, Sparkles, Music, Heart, Star, Zap, Play, Film, Radio } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useWaitlist } from "@/hooks/use-waitlist";
 import WaitlistForm from "@/components/WaitlistForm";
-
-interface IconState {
-  x: number;
-  y: number;
-  size: number;
-  vx: number;
-  vy: number;
-  vSize: number;
-  targetX: number;
-  targetY: number;
-  targetSize: number;
-  parallaxSpeed: number;
-}
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const waitlist = useWaitlist();
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const iconStatesRef = useRef<IconState[]>([]);
-  const animationFrameRef = useRef<number>();
+  const [iconPositions, setIconPositions] = useState<Array<{ left?: string; right?: string; top: string; size: number; parallaxSpeed: number }>>([]);
 
   useEffect(() => {
-    // Initialize icon states
+    // Generate random positions and sizes for icons on mount
     const icons = [
       { parallaxSpeed: 0.35 },
       { parallaxSpeed: 0.28 },
@@ -39,56 +24,62 @@ const Hero = () => {
       { parallaxSpeed: 0.18 },
     ];
 
+    const positions: Array<{ left?: string; right?: string; top: string; size: number; parallaxSpeed: number }> = [];
+    const minPixelDistance = 16; // Minimum distance in pixels
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    const minPixelDistance = 16;
 
-    const isValidPosition = (newPos: { x: number; y: number; size: number }, states: IconState[]) => {
-      return states.every(state => {
+    const isValidPosition = (newPos: { horizontal: number; vertical: number; size: number }) => {
+      return positions.every(pos => {
+        const existingHorizontal = parseFloat(pos.left || pos.right || '0');
+        const existingVertical = parseFloat(pos.top);
+        const existingSize = pos.size * 4; // Convert to pixels
+        const newSize = newPos.size * 4;
+        
+        // Convert percentages to pixels
+        const existingX = (existingHorizontal / 100) * viewportWidth;
+        const existingY = (existingVertical / 100) * viewportHeight;
+        const newX = (newPos.horizontal / 100) * viewportWidth;
+        const newY = (newPos.vertical / 100) * viewportHeight;
+        
+        // Calculate distance between centers
         const distance = Math.sqrt(
-          Math.pow(newPos.x - state.x, 2) + 
-          Math.pow(newPos.y - state.y, 2)
+          Math.pow(newX - existingX, 2) + 
+          Math.pow(newY - existingY, 2)
         );
-        const requiredDistance = (state.size / 2) + (newPos.size / 2) + minPixelDistance;
+        
+        // Required distance is sum of radii plus minimum spacing
+        const requiredDistance = (existingSize / 2) + (newSize / 2) + minPixelDistance;
+        
         return distance >= requiredDistance;
       });
     };
 
-    const initialStates: IconState[] = [];
-
     icons.forEach((icon) => {
       let attempts = 0;
-      let state: IconState | null = null;
+      let position;
 
       while (attempts < 100) {
         const isLeft = Math.random() > 0.5;
+        // Weight towards edges: 0-20% or 80-100% for horizontal
         const edgeZone = Math.random() > 0.5;
-        const horizontalPercent = edgeZone 
-          ? Math.random() * 20
-          : Math.random() * 20 + 80;
+        const horizontal = edgeZone 
+          ? Math.random() * 20 // 0-20% from edge
+          : Math.random() * 20 + 80; // 80-100% from edge
         
+        // For vertical, favor top and bottom: 0-30% or 60-100%
         const topZone = Math.random() > 0.5;
-        const verticalPercent = topZone
-          ? Math.random() * 30
-          : Math.random() * 40 + 60;
+        const vertical = topZone
+          ? Math.random() * 30 // 0-30% from top
+          : Math.random() * 40 + 60; // 60-100% from top
         
-        const x = isLeft 
-          ? (horizontalPercent / 100) * viewportWidth
-          : viewportWidth - (horizontalPercent / 100) * viewportWidth;
-        const y = (verticalPercent / 100) * viewportHeight;
-        const size = (Math.random() * 6 + 10) * 4;
+        const size = Math.random() * 6 + 10; // 10 to 16
         
-        if (isValidPosition({ x, y, size }, initialStates)) {
-          state = {
-            x,
-            y,
-            size,
-            vx: (Math.random() - 0.5) * 0.2,
-            vy: (Math.random() - 0.5) * 0.2,
-            vSize: (Math.random() - 0.5) * 0.05,
-            targetX: x,
-            targetY: y,
-            targetSize: size,
+        if (isValidPosition({ horizontal, vertical, size: Math.floor(size) })) {
+          position = {
+            ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
+            top: `${vertical}%`,
+            size: Math.floor(size),
             parallaxSpeed: icon.parallaxSpeed,
           };
           break;
@@ -96,28 +87,24 @@ const Hero = () => {
         attempts++;
       }
 
-      if (!state) {
-        const x = Math.random() * viewportWidth;
-        const y = Math.random() * viewportHeight;
-        const size = (Math.random() * 6 + 10) * 4;
-        state = {
-          x,
-          y,
-          size,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
-          vSize: (Math.random() - 0.5) * 0.05,
-          targetX: x,
-          targetY: y,
-          targetSize: size,
+      // If no valid position found after attempts, place it anyway (fallback)
+      if (!position) {
+        const isLeft = Math.random() > 0.5;
+        const horizontal = Math.random() * 20;
+        const vertical = Math.random() * 30;
+        const size = Math.random() * 6 + 10;
+        position = {
+          ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
+          top: `${vertical}%`,
+          size: Math.floor(size),
           parallaxSpeed: icon.parallaxSpeed,
         };
       }
 
-      initialStates.push(state);
+      positions.push(position);
     });
 
-    iconStatesRef.current = initialStates;
+    setIconPositions(positions);
   }, []);
 
   useEffect(() => {
@@ -135,96 +122,6 @@ const Hero = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY + window.scrollY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const animate = () => {
-      iconStatesRef.current = iconStatesRef.current.map(state => {
-        const dx = mousePos.x - state.x;
-        const dy = mousePos.y - state.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        let newVx = state.vx;
-        let newVy = state.vy;
-        
-        // Mouse repulsion
-        if (distance < 32 && distance > 0) {
-          const force = (32 - distance) / 32;
-          const angle = Math.atan2(dy, dx);
-          newVx -= Math.cos(angle) * force * 2;
-          newVy -= Math.sin(angle) * force * 2;
-        }
-        
-        // Update target position for meandering
-        if (Math.random() < 0.01) {
-          state.targetX = state.x + (Math.random() - 0.5) * 100;
-          state.targetY = state.y + (Math.random() - 0.5) * 100;
-        }
-        
-        // Update target size for meandering
-        if (Math.random() < 0.01) {
-          state.targetSize = state.size + (Math.random() - 0.5) * 16;
-          state.targetSize = Math.max(40, Math.min(64, state.targetSize));
-        }
-        
-        // Move towards target with damping
-        const toTargetX = state.targetX - state.x;
-        const toTargetY = state.targetY - state.y;
-        newVx += toTargetX * 0.001;
-        newVy += toTargetY * 0.001;
-        
-        // Size velocity
-        const toTargetSize = state.targetSize - state.size;
-        let newVSize = state.vSize + toTargetSize * 0.001;
-        
-        // Apply damping
-        newVx *= 0.95;
-        newVy *= 0.95;
-        newVSize *= 0.95;
-        
-        // Update position and size
-        let newX = state.x + newVx;
-        let newY = state.y + newVy;
-        let newSize = state.size + newVSize;
-        
-        // Keep within bounds
-        const margin = 100;
-        if (newX < -margin) newX = window.innerWidth + margin;
-        if (newX > window.innerWidth + margin) newX = -margin;
-        if (newY < -margin) newY = window.innerHeight + margin;
-        if (newY > window.innerHeight + margin) newY = -margin;
-        
-        newSize = Math.max(40, Math.min(64, newSize));
-        
-        return {
-          ...state,
-          x: newX,
-          y: newY,
-          size: newSize,
-          vx: newVx,
-          vy: newVy,
-          vSize: newVSize,
-        };
-      });
-      
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-    
-    animationFrameRef.current = requestAnimationFrame(animate);
-    
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [mousePos]);
-
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
@@ -236,36 +133,130 @@ const Hero = () => {
         }}
       />
       
-      {/* Floating icons - meandering with mouse repulsion */}
-      {iconStatesRef.current.length > 0 && (
+      {/* Floating icons - falling stars effect - spanning full viewport */}
+      {iconPositions.length > 0 && (
         <>
-          {[Star, Sparkles, Video, Music, Play, Film, Zap, Radio, Heart, BookOpen, Tag].map((Icon, i) => {
-            const state = iconStatesRef.current[i];
-            if (!state) return null;
-            
-            const colors = ['text-primary', 'text-secondary', 'text-accent'];
-            const colorClass = colors[i % colors.length];
-            
-            return (
-              <div
-                key={i}
-                className="absolute opacity-20 hidden lg:block will-change-transform pointer-events-none transition-all duration-100"
-                style={{
-                  left: `${state.x}px`,
-                  top: `${state.y - scrollY * state.parallaxSpeed}px`,
-                  transform: 'translate(-50%, -50%)',
-                }}
-              >
-                <Icon 
-                  className={`${colorClass} animate-pulse`} 
-                  style={{ 
-                    width: `${state.size}px`, 
-                    height: `${state.size}px` 
-                  }} 
-                />
-              </div>
-            );
-          })}
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[0].left,
+              right: iconPositions[0].right,
+              top: iconPositions[0].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[0].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Star className="text-primary animate-pulse" style={{ width: `${iconPositions[0].size * 4}px`, height: `${iconPositions[0].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[1].left,
+              right: iconPositions[1].right,
+              top: iconPositions[1].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[1].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Sparkles className="text-secondary animate-pulse" style={{ width: `${iconPositions[1].size * 4}px`, height: `${iconPositions[1].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[2].left,
+              right: iconPositions[2].right,
+              top: iconPositions[2].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[2].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Video className="text-accent animate-pulse" style={{ width: `${iconPositions[2].size * 4}px`, height: `${iconPositions[2].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[3].left,
+              right: iconPositions[3].right,
+              top: iconPositions[3].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[3].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Music className="text-primary animate-pulse" style={{ width: `${iconPositions[3].size * 4}px`, height: `${iconPositions[3].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[4].left,
+              right: iconPositions[4].right,
+              top: iconPositions[4].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[4].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Play className="text-secondary animate-pulse" style={{ width: `${iconPositions[4].size * 4}px`, height: `${iconPositions[4].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[5].left,
+              right: iconPositions[5].right,
+              top: iconPositions[5].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[5].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Film className="text-accent animate-pulse" style={{ width: `${iconPositions[5].size * 4}px`, height: `${iconPositions[5].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[6].left,
+              right: iconPositions[6].right,
+              top: iconPositions[6].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[6].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Zap className="text-primary animate-pulse" style={{ width: `${iconPositions[6].size * 4}px`, height: `${iconPositions[6].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[7].left,
+              right: iconPositions[7].right,
+              top: iconPositions[7].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[7].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Radio className="text-secondary animate-pulse" style={{ width: `${iconPositions[7].size * 4}px`, height: `${iconPositions[7].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[8].left,
+              right: iconPositions[8].right,
+              top: iconPositions[8].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[8].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Heart className="text-accent animate-pulse" style={{ width: `${iconPositions[8].size * 4}px`, height: `${iconPositions[8].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[9].left,
+              right: iconPositions[9].right,
+              top: iconPositions[9].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[9].parallaxSpeed}px, 0)`
+            }}
+          >
+            <BookOpen className="text-primary animate-pulse" style={{ width: `${iconPositions[9].size * 4}px`, height: `${iconPositions[9].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[10].left,
+              right: iconPositions[10].right,
+              top: iconPositions[10].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[10].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Tag className="text-secondary animate-pulse" style={{ width: `${iconPositions[10].size * 4}px`, height: `${iconPositions[10].size * 4}px` }} />
+          </div>
         </>
       )}
       
