@@ -132,4 +132,34 @@ All colors MUST be HSL.
   .parallax {
     transition: transform 0.1s ease-out;
   }
+  
+  .animate-slide-in-up {
+    animation: slide-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-slide-out-down {
+    animation: slide-out-down 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+  }
+  
+  @keyframes slide-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes slide-out-down {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+  }
 }
