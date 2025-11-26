@@ -8,6 +8,8 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer";
+import { useWaitlist } from "@/hooks/use-waitlist";
+import WaitlistForm from "@/components/WaitlistForm";
 
 // Easy-to-edit data structure for developers
 const faqs = [
@@ -53,6 +55,8 @@ const infoSections = [
 ];
 
 const LearnMore = () => {
+  const waitlist = useWaitlist();
+  
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -137,13 +141,7 @@ const LearnMore = () => {
           <p className="text-muted-foreground text-lg">
             Join our waitlist and be the first to experience Dance Partner
           </p>
-          <Button 
-            size="lg" 
-            className="mt-4 px-8 py-6 text-lg rounded-full"
-            onClick={() => window.location.href = '/'}
-          >
-            Join the Waitlist
-          </Button>
+          <WaitlistForm {...waitlist} showLearnMore={false} />
         </div>
       </section>
 

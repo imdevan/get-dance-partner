@@ -1,21 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ArrowRight, Video, BookOpen, Tag } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-
-const emailSchema = z.object({
-  email: z.string().trim().email({ message: "Please enter a valid email address" }).max(255, { message: "Email must be less than 255 characters" }),
-});
+import { Video, BookOpen, Tag, Sparkles, Music, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useWaitlist } from "@/hooks/use-waitlist";
+import WaitlistForm from "@/components/WaitlistForm";
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [showWaitlist, setShowWaitlist] = useState(false);
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [email, setEmail] = useState("");
-  const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
+  const waitlist = useWaitlist();
 
   useEffect(() => {
     let ticking = false;
@@ -32,53 +22,6 @@ const Hero = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (formRef.current && !formRef.current.contains(event.target as Node) && showWaitlist && !isAnimatingOut) {
-        handleCloseWaitlist();
-      }
-    };
-
-    if (showWaitlist) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showWaitlist, isAnimatingOut]);
-
-  const handleCloseWaitlist = () => {
-    setIsAnimatingOut(true);
-    setTimeout(() => {
-      setShowWaitlist(false);
-      setIsAnimatingOut(false);
-      setEmail("");
-    }, 300); // Match animation duration
-  };
-
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const result = emailSchema.safeParse({ email });
-    
-    if (!result.success) {
-      toast({
-        title: "Invalid email",
-        description: result.error.errors[0].message,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Here you would integrate with your backend/newsletter service
-    toast({
-      title: "You're on the waitlist! 🎉",
-      description: "We'll notify you when Dance Partner launches.",
-    });
-    
-    handleCloseWaitlist();
-  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
@@ -110,6 +53,24 @@ const Hero = () => {
             style={{ transform: `translate3d(0, ${scrollY * 0.25}px, 0)` }}
           />
         </div>
+        <div className="absolute -right-10 bottom-32 opacity-20 hidden lg:block will-change-transform">
+          <Sparkles 
+            className="w-14 h-14 text-primary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.18}px, 0)` }}
+          />
+        </div>
+        <div className="absolute left-20 top-60 opacity-20 hidden lg:block will-change-transform">
+          <Music 
+            className="w-12 h-12 text-secondary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.22}px, 0)` }}
+          />
+        </div>
+        <div className="absolute right-32 top-10 opacity-20 hidden lg:block will-change-transform">
+          <Heart 
+            className="w-10 h-10 text-accent animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.12}px, 0)` }}
+          />
+        </div>
         
         {/* Hero content */}
         <div className="space-y-6 animate-fade-in">
@@ -127,53 +88,7 @@ const Hero = () => {
             with the intelligent companion for serious dancers.
           </p>
           
-          <div className="flex flex-col gap-4 justify-center items-center pt-8">
-            {!showWaitlist ? (
-              <div className="flex flex-col sm:flex-row gap-4 animate-slide-in-up">
-                <Button 
-                  size="lg" 
-                  className="group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg rounded-full transition-all hover:scale-105"
-                  onClick={() => setShowWaitlist(true)}
-                >
-                  Join the Waitlist
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:animate-arrow-refresh" />
-                </Button>
-                
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 hover:text-foreground transition-all hover:scale-105"
-                  onClick={() => window.location.href = '/learn-more'}
-                >
-                  Learn More
-                </Button>
-              </div>
-            ) : (
-              <form 
-                ref={formRef}
-                onSubmit={handleWaitlistSubmit} 
-                className={`flex flex-col sm:flex-row gap-3 w-full max-w-md ${
-                  isAnimatingOut ? 'animate-slide-out-down' : 'animate-slide-in-up'
-                }`}
-              >
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 h-12 px-6 rounded-full border-2"
-                  autoFocus
-                />
-                <Button 
-                  type="submit"
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 rounded-full whitespace-nowrap"
-                >
-                  Join
-                </Button>
-              </form>
-            )}
-          </div>
+          <WaitlistForm {...waitlist} />
           
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-16">
