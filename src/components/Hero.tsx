@@ -1,9 +1,19 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ArrowRight, Video, BookOpen, Tag } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const emailSchema = z.object({
+  email: z.string().trim().email({ message: "Please enter a valid email address" }).max(255, { message: "Email must be less than 255 characters" }),
+});
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [showWaitlist, setShowWaitlist] = useState(false);
+  const [email, setEmail] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
     let ticking = false;
@@ -19,6 +29,30 @@ const Hero = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const result = emailSchema.safeParse({ email });
+    
+    if (!result.success) {
+      toast({
+        title: "Invalid email",
+        description: result.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Here you would integrate with your backend/newsletter service
+    toast({
+      title: "You're on the waitlist! 🎉",
+      description: "We'll notify you when Dance Partner launches.",
+    });
+    
+    setEmail("");
+    setShowWaitlist(false);
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
@@ -67,23 +101,46 @@ const Hero = () => {
             with the intelligent companion for serious dancers.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <Button 
-              size="lg" 
-              className="group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg rounded-full transition-all hover:scale-105"
-            >
-              Join the Waitlist
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 transition-all hover:scale-105"
-              onClick={() => window.location.href = '/learn-more'}
-            >
-              Learn More
-            </Button>
+          <div className="flex flex-col gap-4 justify-center items-center pt-8">
+            {!showWaitlist ? (
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg" 
+                  className="group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg rounded-full transition-all hover:scale-105"
+                  onClick={() => setShowWaitlist(true)}
+                >
+                  Join the Waitlist
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 transition-all hover:scale-105"
+                  onClick={() => window.location.href = '/learn-more'}
+                >
+                  Learn More
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md animate-fade-in">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 h-12 px-6 rounded-full border-2"
+                  autoFocus
+                />
+                <Button 
+                  type="submit"
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 rounded-full whitespace-nowrap"
+                >
+                  Join
+                </Button>
+              </form>
+            )}
           </div>
           
           {/* Stats */}
