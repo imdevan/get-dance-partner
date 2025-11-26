@@ -141,6 +141,10 @@ All colors MUST be HSL.
     animation: slide-out-down 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
   }
   
+  .animate-arrow-refresh {
+    animation: arrow-refresh 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
   @keyframes slide-in-up {
     from {
       opacity: 0;
@@ -160,6 +164,25 @@ All colors MUST be HSL.
     to {
       opacity: 0;
       transform: translateY(10px) scale(0.98);
+    }
+  }
+  
+  @keyframes arrow-refresh {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    40% {
+      transform: translateX(8px);
+      opacity: 0;
+    }
+    41% {
+      transform: translateX(-8px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
     }
   }
 }

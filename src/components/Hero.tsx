@@ -136,13 +136,13 @@ const Hero = () => {
                   onClick={() => setShowWaitlist(true)}
                 >
                   Join the Waitlist
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:animate-arrow-refresh" />
                 </Button>
                 
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 transition-all hover:scale-105"
+                  className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 hover:text-foreground transition-all hover:scale-105"
                   onClick={() => window.location.href = '/learn-more'}
                 >
                   Learn More
