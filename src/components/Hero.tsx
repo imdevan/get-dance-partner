@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Video, BookOpen, Tag } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
@@ -14,6 +14,7 @@ const Hero = () => {
   const [showWaitlist, setShowWaitlist] = useState(false);
   const [email, setEmail] = useState("");
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -29,6 +30,23 @@ const Hero = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node) && showWaitlist) {
+        setShowWaitlist(false);
+        setEmail("");
+      }
+    };
+
+    if (showWaitlist) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showWaitlist]);
 
   const handleWaitlistSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,7 +121,7 @@ const Hero = () => {
           
           <div className="flex flex-col gap-4 justify-center items-center pt-8">
             {!showWaitlist ? (
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 animate-scale-in">
                 <Button 
                   size="lg" 
                   className="group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg rounded-full transition-all hover:scale-105"
@@ -123,7 +141,11 @@ const Hero = () => {
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-3 w-full max-w-md animate-fade-in">
+              <form 
+                ref={formRef}
+                onSubmit={handleWaitlistSubmit} 
+                className="flex flex-col sm:flex-row gap-3 w-full max-w-md animate-scale-in"
+              >
                 <Input
                   type="email"
                   placeholder="Enter your email"
