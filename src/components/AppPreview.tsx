@@ -43,9 +43,9 @@ const AppPreview = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+        <div className="grid md:grid-cols-2 gap-8 items-start">
           <div 
-            className="space-y-6"
+            className="space-y-6 md:-mt-8"
             style={{
               transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * 0.1}px, 0)`,
               willChange: isMobile ? 'auto' : 'transform',
@@ -83,7 +83,7 @@ const AppPreview = () => {
           </div>
 
           <div 
-            className="relative group"
+            className="relative group md:mt-12"
             style={{
               transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * -0.1}px, 0)`,
               willChange: isMobile ? 'auto' : 'transform',
