@@ -24,18 +24,67 @@ const Hero = () => {
       { parallaxSpeed: 0.18 },
     ];
 
-    const positions = icons.map((icon) => {
-      const isLeft = Math.random() > 0.5;
-      const horizontal = Math.random() * 45 + 5; // 5% to 50%
-      const vertical = Math.random() * 70 + 5; // 5% to 75%
-      const size = Math.random() * 6 + 10; // 10 to 16 (for w-10 to w-16 equivalent)
-      
-      return {
-        ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
-        top: `${vertical}%`,
-        size: Math.floor(size),
-        parallaxSpeed: icon.parallaxSpeed,
-      };
+    const positions: Array<{ left?: string; right?: string; top: string; size: number; parallaxSpeed: number }> = [];
+    const minDistance = 15; // Minimum distance between icons in percentage
+
+    const isValidPosition = (newPos: { horizontal: number; vertical: number }) => {
+      return positions.every(pos => {
+        const existingHorizontal = parseFloat(pos.left || pos.right || '0');
+        const existingVertical = parseFloat(pos.top);
+        const distance = Math.sqrt(
+          Math.pow(newPos.horizontal - existingHorizontal, 2) + 
+          Math.pow(newPos.vertical - existingVertical, 2)
+        );
+        return distance >= minDistance;
+      });
+    };
+
+    icons.forEach((icon) => {
+      let attempts = 0;
+      let position;
+
+      while (attempts < 50) {
+        const isLeft = Math.random() > 0.5;
+        // Weight towards edges: 0-20% or 80-100% for horizontal
+        const edgeZone = Math.random() > 0.5;
+        const horizontal = edgeZone 
+          ? Math.random() * 20 // 0-20% from edge
+          : Math.random() * 20 + 80; // 80-100% from edge
+        
+        // For vertical, favor top and bottom: 0-30% or 60-100%
+        const topZone = Math.random() > 0.5;
+        const vertical = topZone
+          ? Math.random() * 30 // 0-30% from top
+          : Math.random() * 40 + 60; // 60-100% from top
+        
+        if (isValidPosition({ horizontal, vertical })) {
+          const size = Math.random() * 6 + 10; // 10 to 16
+          position = {
+            ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
+            top: `${vertical}%`,
+            size: Math.floor(size),
+            parallaxSpeed: icon.parallaxSpeed,
+          };
+          break;
+        }
+        attempts++;
+      }
+
+      // If no valid position found after attempts, place it anyway (fallback)
+      if (!position) {
+        const isLeft = Math.random() > 0.5;
+        const horizontal = Math.random() * 20;
+        const vertical = Math.random() * 30;
+        const size = Math.random() * 6 + 10;
+        position = {
+          ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
+          top: `${vertical}%`,
+          size: Math.floor(size),
+          parallaxSpeed: icon.parallaxSpeed,
+        };
+      }
+
+      positions.push(position);
     });
 
     setIconPositions(positions);
