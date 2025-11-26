@@ -17,6 +17,10 @@ const DanceStyles = () => {
       </div>
       
       <div className="relative">
+        {/* Gradient masks for fade effect */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-48 bg-gradient-to-r from-secondary/30 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-48 bg-gradient-to-l from-secondary/30 to-transparent z-10 pointer-events-none" />
+        
         <div className="flex animate-marquee whitespace-nowrap">
           {[...danceStyles, ...danceStyles, ...danceStyles].map((style, index) => (
             <div
