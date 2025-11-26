@@ -6,8 +6,17 @@ const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -15,30 +24,30 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
       {/* Animated background gradient */}
       <div 
-        className="absolute inset-0 gradient-primary opacity-10"
+        className="absolute inset-0 gradient-primary opacity-10 will-change-transform"
         style={{
-          transform: `translateY(${scrollY * 0.5}px)`,
+          transform: `translate3d(0, ${scrollY * 0.5}px, 0)`,
         }}
       />
       
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         {/* Floating icons */}
-        <div className="absolute -left-20 top-20 opacity-20 hidden lg:block">
+        <div className="absolute -left-20 top-20 opacity-20 hidden lg:block will-change-transform">
           <Video 
             className="w-16 h-16 text-primary animate-pulse"
-            style={{ transform: `translateY(${scrollY * 0.2}px)` }}
+            style={{ transform: `translate3d(0, ${scrollY * 0.2}px, 0)` }}
           />
         </div>
-        <div className="absolute -right-20 top-40 opacity-20 hidden lg:block">
+        <div className="absolute -right-20 top-40 opacity-20 hidden lg:block will-change-transform">
           <BookOpen 
             className="w-16 h-16 text-secondary animate-pulse"
-            style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+            style={{ transform: `translate3d(0, ${scrollY * 0.15}px, 0)` }}
           />
         </div>
-        <div className="absolute left-10 bottom-20 opacity-20 hidden lg:block">
+        <div className="absolute left-10 bottom-20 opacity-20 hidden lg:block will-change-transform">
           <Tag 
             className="w-12 h-12 text-accent animate-pulse"
-            style={{ transform: `translateY(${scrollY * 0.25}px)` }}
+            style={{ transform: `translate3d(0, ${scrollY * 0.25}px, 0)` }}
           />
         </div>
         
@@ -71,6 +80,7 @@ const Hero = () => {
               size="lg" 
               variant="outline"
               className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 transition-all hover:scale-105"
+              onClick={() => window.location.href = '/learn-more'}
             >
               Learn More
             </Button>

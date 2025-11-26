@@ -9,8 +9,17 @@ const AppPreview = () => {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener("resize", checkMobile);
@@ -38,7 +47,8 @@ const AppPreview = () => {
           <div 
             className="space-y-6"
             style={{
-              transform: isMobile ? 'none' : `translateY(${(scrollY - 1000) * 0.1}px)`,
+              transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * 0.1}px, 0)`,
+              willChange: isMobile ? 'auto' : 'transform',
             }}
           >
             <div className="space-y-3">
@@ -75,7 +85,8 @@ const AppPreview = () => {
           <div 
             className="relative group"
             style={{
-              transform: isMobile ? 'none' : `translateY(${(scrollY - 1000) * -0.1}px)`,
+              transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * -0.1}px, 0)`,
+              willChange: isMobile ? 'auto' : 'transform',
             }}
           >
             <div className="absolute -inset-4 gradient-primary opacity-20 rounded-3xl blur-2xl group-hover:opacity-30 transition-opacity" />
