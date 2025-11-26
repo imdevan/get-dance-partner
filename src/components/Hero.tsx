@@ -1,4 +1,4 @@
-import { Video, BookOpen, Tag, Sparkles, Music, Heart } from "lucide-react";
+import { Video, BookOpen, Tag, Sparkles, Music, Heart, Star, Zap, Play, Film, Radio } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useWaitlist } from "@/hooks/use-waitlist";
 import WaitlistForm from "@/components/WaitlistForm";
@@ -34,41 +34,71 @@ const Hero = () => {
       />
       
       <div className="relative z-10 max-w-6xl mx-auto text-center">
-        {/* Floating icons */}
-        <div className="absolute -left-20 top-20 opacity-20 hidden lg:block will-change-transform">
-          <Video 
-            className="w-16 h-16 text-primary animate-pulse"
-            style={{ transform: `translate3d(0, ${scrollY * 0.2}px, 0)` }}
+        {/* Floating icons - falling stars effect */}
+        <div className="absolute left-10 top-10 opacity-20 hidden lg:block will-change-transform">
+          <Star 
+            className="w-14 h-14 text-primary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.35}px, 0)` }}
           />
         </div>
-        <div className="absolute -right-20 top-40 opacity-20 hidden lg:block will-change-transform">
+        <div className="absolute right-20 top-5 opacity-20 hidden lg:block will-change-transform">
+          <Sparkles 
+            className="w-12 h-12 text-secondary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.28}px, 0)` }}
+          />
+        </div>
+        <div className="absolute left-32 top-32 opacity-20 hidden lg:block will-change-transform">
+          <Video 
+            className="w-16 h-16 text-accent animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.42}px, 0)` }}
+          />
+        </div>
+        <div className="absolute right-40 top-20 opacity-20 hidden lg:block will-change-transform">
+          <Music 
+            className="w-13 h-13 text-primary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.38}px, 0)` }}
+          />
+        </div>
+        <div className="absolute left-60 top-8 opacity-20 hidden lg:block will-change-transform">
+          <Play 
+            className="w-10 h-10 text-secondary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.25}px, 0)` }}
+          />
+        </div>
+        <div className="absolute right-60 top-36 opacity-20 hidden lg:block will-change-transform">
+          <Film 
+            className="w-14 h-14 text-accent animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.45}px, 0)` }}
+          />
+        </div>
+        <div className="absolute left-80 top-20 opacity-20 hidden lg:block will-change-transform">
+          <Zap 
+            className="w-11 h-11 text-primary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.32}px, 0)` }}
+          />
+        </div>
+        <div className="absolute right-96 top-12 opacity-20 hidden lg:block will-change-transform">
+          <Radio 
+            className="w-12 h-12 text-secondary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.30}px, 0)` }}
+          />
+        </div>
+        <div className="absolute left-1/4 top-16 opacity-20 hidden lg:block will-change-transform">
+          <Heart 
+            className="w-10 h-10 text-accent animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.22}px, 0)` }}
+          />
+        </div>
+        <div className="absolute right-1/4 top-24 opacity-20 hidden lg:block will-change-transform">
           <BookOpen 
-            className="w-16 h-16 text-secondary animate-pulse"
-            style={{ transform: `translate3d(0, ${scrollY * 0.15}px, 0)` }}
+            className="w-15 h-15 text-primary animate-pulse"
+            style={{ transform: `translate3d(0, ${scrollY * 0.40}px, 0)` }}
           />
         </div>
         <div className="absolute left-10 bottom-20 opacity-20 hidden lg:block will-change-transform">
           <Tag 
-            className="w-12 h-12 text-accent animate-pulse"
-            style={{ transform: `translate3d(0, ${scrollY * 0.25}px, 0)` }}
-          />
-        </div>
-        <div className="absolute -right-10 bottom-32 opacity-20 hidden lg:block will-change-transform">
-          <Sparkles 
-            className="w-14 h-14 text-primary animate-pulse"
-            style={{ transform: `translate3d(0, ${scrollY * 0.18}px, 0)` }}
-          />
-        </div>
-        <div className="absolute left-20 top-60 opacity-20 hidden lg:block will-change-transform">
-          <Music 
             className="w-12 h-12 text-secondary animate-pulse"
-            style={{ transform: `translate3d(0, ${scrollY * 0.22}px, 0)` }}
-          />
-        </div>
-        <div className="absolute right-32 top-10 opacity-20 hidden lg:block will-change-transform">
-          <Heart 
-            className="w-10 h-10 text-accent animate-pulse"
-            style={{ transform: `translate3d(0, ${scrollY * 0.12}px, 0)` }}
+            style={{ transform: `translate3d(0, ${scrollY * 0.18}px, 0)` }}
           />
         </div>
         
