@@ -91,10 +91,11 @@ const AppPreview = () => {
           >
             <div className="absolute -inset-4 gradient-primary opacity-20 rounded-3xl blur-2xl group-hover:opacity-30 transition-opacity" />
             <div className="relative bg-card border-2 rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                src="https://placecats.com/400/800"
-                alt="Dance Partner App Screenshot"
-                className="w-full h-auto"
+              <iframe
+                src="https://devanhuapaya.com/"
+                title="Dance Partner App Preview"
+                className="w-full h-[600px] md:h-[800px]"
+                loading="lazy"
               />
             </div>
           </div>
