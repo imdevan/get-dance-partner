@@ -6,6 +6,40 @@ import WaitlistForm from "@/components/WaitlistForm";
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const waitlist = useWaitlist();
+  const [iconPositions, setIconPositions] = useState<Array<{ left?: string; right?: string; top: string; size: number; parallaxSpeed: number }>>([]);
+
+  useEffect(() => {
+    // Generate random positions and sizes for icons on mount
+    const icons = [
+      { parallaxSpeed: 0.35 },
+      { parallaxSpeed: 0.28 },
+      { parallaxSpeed: 0.42 },
+      { parallaxSpeed: 0.38 },
+      { parallaxSpeed: 0.25 },
+      { parallaxSpeed: 0.45 },
+      { parallaxSpeed: 0.32 },
+      { parallaxSpeed: 0.30 },
+      { parallaxSpeed: 0.22 },
+      { parallaxSpeed: 0.40 },
+      { parallaxSpeed: 0.18 },
+    ];
+
+    const positions = icons.map((icon) => {
+      const isLeft = Math.random() > 0.5;
+      const horizontal = Math.random() * 45 + 5; // 5% to 50%
+      const vertical = Math.random() * 70 + 5; // 5% to 75%
+      const size = Math.random() * 6 + 10; // 10 to 16 (for w-10 to w-16 equivalent)
+      
+      return {
+        ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
+        top: `${vertical}%`,
+        size: Math.floor(size),
+        parallaxSpeed: icon.parallaxSpeed,
+      };
+    });
+
+    setIconPositions(positions);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -34,72 +68,131 @@ const Hero = () => {
       />
       
       {/* Floating icons - falling stars effect - spanning full viewport */}
-      <div className="absolute left-[5%] top-[10%] opacity-20 hidden lg:block will-change-transform">
-        <Star 
-          className="w-14 h-14 text-primary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.35}px, 0)` }}
-        />
-      </div>
-      <div className="absolute right-[8%] top-[5%] opacity-20 hidden lg:block will-change-transform">
-        <Sparkles 
-          className="w-12 h-12 text-secondary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.28}px, 0)` }}
-        />
-      </div>
-      <div className="absolute left-[15%] top-[25%] opacity-20 hidden lg:block will-change-transform">
-        <Video 
-          className="w-16 h-16 text-accent animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.42}px, 0)` }}
-        />
-      </div>
-      <div className="absolute right-[12%] top-[15%] opacity-20 hidden lg:block will-change-transform">
-        <Music 
-          className="w-13 h-13 text-primary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.38}px, 0)` }}
-        />
-      </div>
-      <div className="absolute left-[25%] top-[8%] opacity-20 hidden lg:block will-change-transform">
-        <Play 
-          className="w-10 h-10 text-secondary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.25}px, 0)` }}
-        />
-      </div>
-      <div className="absolute right-[20%] top-[30%] opacity-20 hidden lg:block will-change-transform">
-        <Film 
-          className="w-14 h-14 text-accent animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.45}px, 0)` }}
-        />
-      </div>
-      <div className="absolute left-[35%] top-[18%] opacity-20 hidden lg:block will-change-transform">
-        <Zap 
-          className="w-11 h-11 text-primary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.32}px, 0)` }}
-        />
-      </div>
-      <div className="absolute right-[35%] top-[12%] opacity-20 hidden lg:block will-change-transform">
-        <Radio 
-          className="w-12 h-12 text-secondary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.30}px, 0)` }}
-        />
-      </div>
-      <div className="absolute left-[45%] top-[22%] opacity-20 hidden lg:block will-change-transform">
-        <Heart 
-          className="w-10 h-10 text-accent animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.22}px, 0)` }}
-        />
-      </div>
-      <div className="absolute right-[45%] top-[28%] opacity-20 hidden lg:block will-change-transform">
-        <BookOpen 
-          className="w-15 h-15 text-primary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.40}px, 0)` }}
-        />
-      </div>
-      <div className="absolute left-[8%] top-[70%] opacity-20 hidden lg:block will-change-transform">
-        <Tag 
-          className="w-12 h-12 text-secondary animate-pulse"
-          style={{ transform: `translate3d(0, ${scrollY * 0.18}px, 0)` }}
-        />
-      </div>
+      {iconPositions.length > 0 && (
+        <>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[0].left,
+              right: iconPositions[0].right,
+              top: iconPositions[0].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[0].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Star className="text-primary animate-pulse" style={{ width: `${iconPositions[0].size * 4}px`, height: `${iconPositions[0].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[1].left,
+              right: iconPositions[1].right,
+              top: iconPositions[1].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[1].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Sparkles className="text-secondary animate-pulse" style={{ width: `${iconPositions[1].size * 4}px`, height: `${iconPositions[1].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[2].left,
+              right: iconPositions[2].right,
+              top: iconPositions[2].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[2].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Video className="text-accent animate-pulse" style={{ width: `${iconPositions[2].size * 4}px`, height: `${iconPositions[2].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[3].left,
+              right: iconPositions[3].right,
+              top: iconPositions[3].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[3].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Music className="text-primary animate-pulse" style={{ width: `${iconPositions[3].size * 4}px`, height: `${iconPositions[3].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[4].left,
+              right: iconPositions[4].right,
+              top: iconPositions[4].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[4].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Play className="text-secondary animate-pulse" style={{ width: `${iconPositions[4].size * 4}px`, height: `${iconPositions[4].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[5].left,
+              right: iconPositions[5].right,
+              top: iconPositions[5].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[5].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Film className="text-accent animate-pulse" style={{ width: `${iconPositions[5].size * 4}px`, height: `${iconPositions[5].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[6].left,
+              right: iconPositions[6].right,
+              top: iconPositions[6].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[6].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Zap className="text-primary animate-pulse" style={{ width: `${iconPositions[6].size * 4}px`, height: `${iconPositions[6].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[7].left,
+              right: iconPositions[7].right,
+              top: iconPositions[7].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[7].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Radio className="text-secondary animate-pulse" style={{ width: `${iconPositions[7].size * 4}px`, height: `${iconPositions[7].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[8].left,
+              right: iconPositions[8].right,
+              top: iconPositions[8].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[8].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Heart className="text-accent animate-pulse" style={{ width: `${iconPositions[8].size * 4}px`, height: `${iconPositions[8].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[9].left,
+              right: iconPositions[9].right,
+              top: iconPositions[9].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[9].parallaxSpeed}px, 0)`
+            }}
+          >
+            <BookOpen className="text-primary animate-pulse" style={{ width: `${iconPositions[9].size * 4}px`, height: `${iconPositions[9].size * 4}px` }} />
+          </div>
+          <div 
+            className="absolute opacity-20 hidden lg:block will-change-transform"
+            style={{ 
+              left: iconPositions[10].left,
+              right: iconPositions[10].right,
+              top: iconPositions[10].top,
+              transform: `translate3d(0, ${scrollY * iconPositions[10].parallaxSpeed}px, 0)`
+            }}
+          >
+            <Tag className="text-secondary animate-pulse" style={{ width: `${iconPositions[10].size * 4}px`, height: `${iconPositions[10].size * 4}px` }} />
+          </div>
+        </>
+      )}
       
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         
