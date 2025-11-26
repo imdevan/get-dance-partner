@@ -83,7 +83,7 @@ const AppPreview = () => {
           </div>
 
           <div 
-            className="relative group md:mt-12"
+            className="relative group md:mt-24"
             style={{
               transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * -0.1}px, 0)`,
               willChange: isMobile ? 'auto' : 'transform',
