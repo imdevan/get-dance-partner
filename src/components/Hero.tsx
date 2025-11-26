@@ -25,17 +25,33 @@ const Hero = () => {
     ];
 
     const positions: Array<{ left?: string; right?: string; top: string; size: number; parallaxSpeed: number }> = [];
-    const minDistance = 15; // Minimum distance between icons in percentage
+    const minPixelDistance = 16; // Minimum distance in pixels
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-    const isValidPosition = (newPos: { horizontal: number; vertical: number }) => {
+    const isValidPosition = (newPos: { horizontal: number; vertical: number; size: number }) => {
       return positions.every(pos => {
         const existingHorizontal = parseFloat(pos.left || pos.right || '0');
         const existingVertical = parseFloat(pos.top);
+        const existingSize = pos.size * 4; // Convert to pixels
+        const newSize = newPos.size * 4;
+        
+        // Convert percentages to pixels
+        const existingX = (existingHorizontal / 100) * viewportWidth;
+        const existingY = (existingVertical / 100) * viewportHeight;
+        const newX = (newPos.horizontal / 100) * viewportWidth;
+        const newY = (newPos.vertical / 100) * viewportHeight;
+        
+        // Calculate distance between centers
         const distance = Math.sqrt(
-          Math.pow(newPos.horizontal - existingHorizontal, 2) + 
-          Math.pow(newPos.vertical - existingVertical, 2)
+          Math.pow(newX - existingX, 2) + 
+          Math.pow(newY - existingY, 2)
         );
-        return distance >= minDistance;
+        
+        // Required distance is sum of radii plus minimum spacing
+        const requiredDistance = (existingSize / 2) + (newSize / 2) + minPixelDistance;
+        
+        return distance >= requiredDistance;
       });
     };
 
@@ -43,7 +59,7 @@ const Hero = () => {
       let attempts = 0;
       let position;
 
-      while (attempts < 50) {
+      while (attempts < 100) {
         const isLeft = Math.random() > 0.5;
         // Weight towards edges: 0-20% or 80-100% for horizontal
         const edgeZone = Math.random() > 0.5;
@@ -57,8 +73,9 @@ const Hero = () => {
           ? Math.random() * 30 // 0-30% from top
           : Math.random() * 40 + 60; // 60-100% from top
         
-        if (isValidPosition({ horizontal, vertical })) {
-          const size = Math.random() * 6 + 10; // 10 to 16
+        const size = Math.random() * 6 + 10; // 10 to 16
+        
+        if (isValidPosition({ horizontal, vertical, size: Math.floor(size) })) {
           position = {
             ...(isLeft ? { left: `${horizontal}%` } : { right: `${horizontal}%` }),
             top: `${vertical}%`,
