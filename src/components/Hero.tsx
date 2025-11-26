@@ -50,7 +50,7 @@ const Hero = () => {
           
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             Master Every
-            <span className="gradient-primary bg-clip-text text-transparent"> Dance Class</span>
+            <span className="bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent selection:bg-primary/20 selection:text-primary"> Dance Class</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
