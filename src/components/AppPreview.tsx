@@ -8,7 +8,7 @@ const AppPreview = () => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
-    
+
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
@@ -20,7 +20,7 @@ const AppPreview = () => {
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     return () => {
       window.removeEventListener("resize", checkMobile);
       window.removeEventListener("scroll", handleScroll);
@@ -38,13 +38,13 @@ const AppPreview = () => {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A beautiful, intuitive interface that gets out of your way and lets you focus 
+            A beautiful, intuitive interface that gets out of your way and lets you focus
             on what matters: improving your craft.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-start">
-          <div 
+          <div
             className="space-y-6 md:-mt-8"
             style={{
               transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * 0.1}px, 0)`,
@@ -82,7 +82,7 @@ const AppPreview = () => {
             </div>
           </div>
 
-          <div 
+          <div
             className="relative group md:mt-24"
             style={{
               transform: isMobile ? 'none' : `translate3d(0, ${(scrollY - 1000) * -0.1}px, 0)`,
@@ -92,7 +92,7 @@ const AppPreview = () => {
             <div className="absolute -inset-4 gradient-primary opacity-20 rounded-3xl blur-2xl group-hover:opacity-30 transition-opacity" />
             <div className="relative bg-card border-2 rounded-3xl overflow-hidden shadow-2xl">
               <iframe
-                src="https://devanhuapaya.com/"
+                src="https://devan.gg/dance-partner-rough-rough-cut/"
                 title="Dance Partner App Preview"
                 className="w-full h-[600px] md:h-[800px]"
                 loading="lazy"
