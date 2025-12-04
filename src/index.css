@@ -198,4 +198,26 @@ All colors MUST be HSL.
   .animate-marquee {
     animation: marquee 30s linear infinite;
   }
+  
+  /* High-performance dance scroll animation - right to left */
+  @keyframes dance-scroll-r2l {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-33.333%, 0, 0);
+    }
+  }
+  
+  .animate-dance-scroll-r2l {
+    animation: dance-scroll-r2l 45s linear infinite;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .animate-dance-scroll-r2l-delayed {
+    animation: dance-scroll-r2l 45s linear infinite;
+    will-change: transform;
+    transform: translate3d(33.333%, 0, 0);
+  }
 }
