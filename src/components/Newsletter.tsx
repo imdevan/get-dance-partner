@@ -3,30 +3,56 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Mail } from "lucide-react";
+import { z } from "zod";
+
+const emailSchema = z.object({
+  email: z.string().trim().email({ message: "Please enter a valid email address" }).max(255, { message: "Email must be less than 255 characters" }),
+});
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email) {
+    const result = emailSchema.safeParse({ email });
+    
+    if (!result.success) {
       toast({
-        title: "Email required",
-        description: "Please enter your email address",
+        title: "Invalid email",
+        description: result.error.errors[0].message,
         variant: "destructive",
       });
       return;
     }
 
-    // Here you would integrate with your newsletter service
-    toast({
-      title: "You're on the list! 🎉",
-      description: "We'll keep you updated on our launch progress.",
-    });
-    
-    setEmail("");
+    try {
+      const response = await fetch("https://dp-signup.huapayadevan.workers.dev/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: result.data.email }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit email");
+      }
+
+      toast({
+        title: "You're on the list! 🎉",
+        description: "We'll keep you updated on our launch progress.",
+      });
+      
+      setEmail("");
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

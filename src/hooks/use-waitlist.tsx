@@ -38,7 +38,7 @@ export const useWaitlist = () => {
     }, 300);
   };
 
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const result = emailSchema.safeParse({ email });
@@ -52,12 +52,32 @@ export const useWaitlist = () => {
       return;
     }
 
-    toast({
-      title: "You're on the waitlist! 🎉",
-      description: "We'll notify you when Dance Partner launches.",
-    });
-    
-    handleCloseWaitlist();
+    try {
+      const response = await fetch("https://dp-signup.huapayadevan.workers.dev/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: result.data.email }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit email");
+      }
+
+      toast({
+        title: "You're on the waitlist! 🎉",
+        description: "We'll notify you when Dance Partner launches.",
+      });
+      
+      handleCloseWaitlist();
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   return {
