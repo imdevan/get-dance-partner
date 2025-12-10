@@ -1,11 +1,15 @@
 const DanceStyles = () => {
   const danceStyles = [
-    "Zouk",
-    "West Coast Swing",
     "Salsa",
     "Bachata",
+    "Zouk",
+    "Kiz",
+    "Blues",
+    "Tango",
     "Lindy Hop",
-    "Blues"
+    "West Coast Swing",
+    "Hip-Hop",
+    "Ballet",
   ];
 
   // Create enough duplicates for seamless looping (3 sets)
@@ -22,18 +26,18 @@ const DanceStyles = () => {
       <div className={`absolute left-0 md:left-${sideSize.md}  lg:left-${sideSize.lg} top-0 bottom-0 w-${sideSize.sm} md:w-${sideSize.md} lg:w-${sideSize.lg} bg-gradient-to-r from-background to-transparent z-10 pointer-events-none h-full`} />
       <div className={`absolute right-0 md:right-${sideSize.md} lg:right-${sideSize.lg} top-0 bottom-0 w-${sideSize.sm} md:w-${sideSize.md} lg:w-${sideSize.lg} bg-gradient-to-l from-background to-transparent z-10 pointer-events-none h-full`} />
 
-        <div className={`absolute left-0 top-0 bottom-0 w-0 md:w-${sideSize.md} lg:w-${sideSize.lg} bg-background z-20 pointer-events-none`} />
-        <div className={`absolute right-0 top-0 bottom-0 w-0 md:w-${sideSize.md} lg:w-${sideSize.lg} bg-background z-20 pointer-events-none`} />
+      <div className={`absolute left-0 top-0 bottom-0 w-0 md:w-${sideSize.md} lg:w-${sideSize.lg} bg-background z-20 pointer-events-none`} />
+      <div className={`absolute right-0 top-0 bottom-0 w-0 md:w-${sideSize.md} lg:w-${sideSize.lg} bg-background z-20 pointer-events-none`} />
 
       <div className="container mx-auto px-4 mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground">
           For Every Dance Style
         </h2>
       </div>
-      
+
       <div className="relative h-32 md:h-40">
         {/* Side blocks to create smaller visible window */}
-        
+
         <div className="absolute inset-0 flex items-center overflow-hidden">
           {/* First track */}
           <div className="absolute left-0 flex animate-dance-scroll-r2l whitespace-nowrap">
@@ -48,7 +52,7 @@ const DanceStyles = () => {
               </div>
             ))}
           </div>
-          
+
           {/* Second track - offset for seamless loop */}
           <div className="absolute left-0 flex animate-dance-scroll-r2l-delayed whitespace-nowrap" aria-hidden="true">
             {duplicatedStyles.map((style, index) => (
