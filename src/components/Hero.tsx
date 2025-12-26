@@ -281,6 +281,7 @@ const Hero = () => {
           <WaitlistForm {...waitlist} />
 
           {/* Stats */}
+          {/*
           <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-16">
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-primary">500+</div>
@@ -295,6 +296,7 @@ const Hero = () => {
               <div className="text-sm text-muted-foreground">Faster Learning</div>
             </div>
           </div>
+          */}
         </div>
       </div>
     </section>
