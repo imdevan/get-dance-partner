@@ -79,7 +79,7 @@ const AppPreview = () => {
               </div>
               <h3 className="text-2xl font-bold">Actually Use Your Recaps</h3>
               <p className="text-muted-foreground">
-                Be that person who is actually excited vol👀 show off last weeks material.
+                Be that person who is actually excited volunteer show off last weeks material. 🌟
               </p>
             </div>
           </div>
