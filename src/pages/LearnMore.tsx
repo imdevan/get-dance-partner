@@ -10,6 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer";
 import { useWaitlist } from "@/hooks/use-waitlist";
 import WaitlistForm from "@/components/WaitlistForm";
+import { useNavigate } from "react-router-dom";
 
 // Easy-to-edit data structure for developers
 const faqs = [
@@ -56,6 +57,7 @@ const infoSections = [
 
 const LearnMore = () => {
   const waitlist = useWaitlist();
+  const navigate = useNavigate();
   
   return (
     <div className="min-h-screen">
@@ -64,7 +66,7 @@ const LearnMore = () => {
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"
-            onClick={() => window.location.href = '/'}
+            onClick={() => navigate('/')}
             className="mb-8 hover:bg-muted"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

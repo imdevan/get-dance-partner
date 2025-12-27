@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface WaitlistFormProps {
   showWaitlist: boolean;
@@ -25,6 +26,8 @@ const WaitlistForm = ({
   buttonText = "Join the Waitlist",
   showLearnMore = true,
 }: WaitlistFormProps) => {
+  const navigate = useNavigate();
+  
   return (
     <div className="flex flex-col gap-4 justify-center items-center pt-8 min-h-[88px]">
       {!showWaitlist ? (
@@ -43,7 +46,7 @@ const WaitlistForm = ({
               size="lg" 
               variant="outline"
               className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5 hover:text-foreground transition-all hover:scale-105"
-              onClick={() => window.location.href = '/learn-more'}
+              onClick={() => navigate('/learn-more')}
             >
               Learn More
             </Button>
