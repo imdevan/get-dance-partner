@@ -58,7 +58,7 @@ const Features = () => {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Stop letting your dance videos collect digital dust. Turn them into your personal 
+            Stop letting your dance videos collect digital dust. Turn them into your personal
             practice powerhouse.
           </p>
         </div>
@@ -66,21 +66,21 @@ const Features = () => {
         <div className="grid md:grid-cols-2 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
-            
+
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border-2 overflow-hidden"
+                className="group hover:shadow-2xl transition-all duration-300  border-2 overflow-hidden"
               >
                 <CardContent className="p-8">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 transition-transform`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
-                  
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+
+                  <h3 className="text-2xl font-bold mb-3 transition-colors">
                     {feature.title}
                   </h3>
-                  
+
                   <p className="text-muted-foreground leading-relaxed">
                     {feature.description}
                   </p>
