@@ -53,31 +53,33 @@ const AppPreview = () => {
           >
             <div className="space-y-3">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-2xl">📱</span>
+                <span className="text-2xl">💃🏻</span>
               </div>
-              <h3 className="text-2xl font-bold">Cross-Platform</h3>
+              <h3 className="text-2xl font-bold">Made By Dancers</h3>
               <p className="text-muted-foreground">
-                Access your videos anywhere—phone, tablet, or desktop. Your practice follows you.
+                Made by people with a passion for partner dancer who were tired of sitting on a pile of dance recaps that never got watched.
+                I plan to work closely with my users to ensure they are getting a valuable experience.
               </p>
             </div>
 
             <div className="space-y-3">
               <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                <span className="text-2xl">⚡</span>
+                <span className="text-2xl">📚</span>
               </div>
-              <h3 className="text-2xl font-bold">Lightning Fast</h3>
+              <h3 className="text-2xl font-bold">Build your dance vocabulary</h3>
               <p className="text-muted-foreground">
-                No waiting, no loading. Jump right into your videos and start practicing.
+                Using intentional titling, tagging, and notes you can build a dance vocabulary that will allow you
+                accelerate your dance education.
               </p>
             </div>
 
             <div className="space-y-3">
               <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                <span className="text-2xl">🔒</span>
+                <span className="text-2xl">👀</span>
               </div>
-              <h3 className="text-2xl font-bold">Your Data, Your Way</h3>
+              <h3 className="text-2xl font-bold">Actually Use Your Recaps</h3>
               <p className="text-muted-foreground">
-                Full control over your videos and notes. Export anytime, no lock-in.
+                Be that person who is actually excited vol👀 show off last weeks material.
               </p>
             </div>
           </div>
