@@ -1,5 +1,33 @@
 import { useState, useEffect } from "react";
 
+interface ValueProp {
+  icon: string;
+  title: string;
+  description: string;
+  bgColor: "primary" | "secondary" | "accent";
+}
+
+const valueProps: ValueProp[] = [
+  {
+    icon: "👀",
+    title: "Actually use Your Recaps",
+    description: "Have a reason to revisit your recaps. <br/><br/>🌟 Be that person who is actually excited volunteer show off last weeks material. ",
+    bgColor: "accent",
+  },
+  {
+    icon: "📚",
+    title: "Build Your Dance Vocabulary",
+    description: "Using intentional titling, tagging, and notes you can build a dance vocabulary that will allow you accelerate your dance education.",
+    bgColor: "secondary",
+  },
+  {
+    icon: "💃🏻",
+    title: "Made By Dancers",
+    description: "Made by people with a passion for partner dancer who were tired of sitting on a pile of dance recaps that never got watched. I plan to work closely with my users to ensure they are getting a valuable experience.",
+    bgColor: "primary",
+  },
+] as const;
+
 const AppPreview = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -51,37 +79,26 @@ const AppPreview = () => {
               willChange: isMobile ? 'auto' : 'transform',
             }}
           >
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-2xl">💃🏻</span>
-              </div>
-              <h3 className="text-2xl font-bold">Made By Dancers</h3>
-              <p className="text-muted-foreground">
-                Made by people with a passion for partner dancer who were tired of sitting on a pile of dance recaps that never got watched.
-                I plan to work closely with my users to ensure they are getting a valuable experience.
-              </p>
-            </div>
+            {valueProps.map((prop, index) => {
+              const bgColorClass = {
+                primary: "bg-primary/10",
+                secondary: "bg-secondary/10",
+                accent: "bg-accent/10",
+              }[prop.bgColor];
 
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                <span className="text-2xl">📚</span>
-              </div>
-              <h3 className="text-2xl font-bold">Build your dance vocabulary</h3>
-              <p className="text-muted-foreground">
-                Using intentional titling, tagging, and notes you can build a dance vocabulary that will allow you
-                accelerate your dance education.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                <span className="text-2xl">👀</span>
-              </div>
-              <h3 className="text-2xl font-bold">Actually Use Your Recaps</h3>
-              <p className="text-muted-foreground">
-                Be that person who is actually excited volunteer show off last weeks material. 🌟
-              </p>
-            </div>
+              return (
+                <div key={index} className="space-y-3">
+                  <div className={`w-12 h-12 rounded-full ${bgColorClass} flex items-center justify-center`}>
+                    <span className="text-2xl">{prop.icon}</span>
+                  </div>
+                  <h3 className="text-2xl font-bold">{prop.title}</h3>
+                  <p
+                    className="text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: prop.description }}
+                  />
+                </div>
+              );
+            })}
           </div>
 
           <div
