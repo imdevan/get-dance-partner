@@ -7,8 +7,16 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   base: mode === "production" ? "/get-dance-partner/" : "/",
   server: {
-    host: "::",
+    host: "localhost",
     port: 8080,
+    hmr: {
+      protocol: "ws",
+      host: "localhost",
+      port: 8080,
+    },
+    watch: {
+      usePolling: false,
+    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

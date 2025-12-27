@@ -1,3 +1,5 @@
+import { sideSize } from "@/lib/constants";
+
 const DanceStyles = () => {
   const danceStyles = [
     "Salsa",
@@ -14,20 +16,15 @@ const DanceStyles = () => {
 
   // Create enough duplicates for seamless looping (3 sets)
   const duplicatedStyles = [...danceStyles, ...danceStyles, ...danceStyles];
-  const sideSize = {
-    sm: 32,
-    md: 48,
-    lg: 96,
-  } as const;
 
   return (
     <section className="py-20 bg-background overflow-hidden relative">
       {/* Fog gradient masks - stronger on right for fog effect */}
-      <div className={`absolute left-0 md:left-${sideSize.md}  lg:left-${sideSize.lg} top-0 bottom-0 w-${sideSize.sm} md:w-${sideSize.md} lg:w-${sideSize.lg} bg-gradient-to-r from-background to-transparent z-10 pointer-events-none h-full`} />
-      <div className={`absolute right-0 md:right-${sideSize.md} lg:right-${sideSize.lg} top-0 bottom-0 w-${sideSize.sm} md:w-${sideSize.md} lg:w-${sideSize.lg} bg-gradient-to-l from-background to-transparent z-10 pointer-events-none h-full`} />
+      <div className={`block absolute left-0 md:left-[${sideSize.md}px]  lg:left-[${sideSize.lg}px] top-0 bottom-0 w-[1px] sm:w-[${sideSize.sm}px] md:w-[${sideSize.md}px] lg:w-[${sideSize.lg}px] bg-gradient-to-r from-background to-transparent z-10 pointer-events-none h-full`} />
+      <div className={`block absolute right-0 md:right-[${sideSize.md}px] lg:right-[${sideSize.lg}px] top-0 bottom-0 w-[1px] sm:w-[${sideSize.sm}px] md:w-[${sideSize.md}px] lg:w-[${sideSize.lg}px] bg-gradient-to-l from-background to-transparent z-10 pointer-events-none h-full`} />
 
-      <div className={`absolute left-0 top-0 bottom-0 w-0 md:w-${sideSize.md} lg:w-${sideSize.lg} bg-background z-20 pointer-events-none`} />
-      <div className={`absolute right-0 top-0 bottom-0 w-0 md:w-${sideSize.md} lg:w-${sideSize.lg} bg-background z-20 pointer-events-none`} />
+      <div className={`block absolute left-0 top-0 bottom-0 w-[1px] sm:w-[${sideSize.sm}px] md:w-[${sideSize.md}px] lg:w-[${sideSize.lg}px] bg-background z-20 pointer-events-none`} >{' '}</div>
+      <div className={`block absolute right-0 top-0 bottom-0 w-[1px] sm:w-[${sideSize.sm}px] md:w-[${sideSize.md}px] lg:w-[${sideSize.lg}px] bg-background z-20 pointer-events-none`} >{' '}</div>
 
       <div className="container mx-auto px-4 mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground">
